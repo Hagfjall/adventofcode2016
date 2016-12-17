@@ -1,7 +1,6 @@
 package main
 
 import (
-	"strings"
 	"strconv"
 )
 
@@ -19,20 +18,23 @@ URLULLLDRDDULRRLRLUULDRUUULDRRLLDDDLDUULLDRLULRRDRRDDDRRDLRRLLDDRDULLRRLLUDUDDLD
 	rowIndex := 1
 	colIndex := 1
 	pressedButtons := ""
-	for _, oneNumberInstruction := range strings.Split(input, "\n") {
-		for _, instruction := range oneNumberInstruction {
-			if instruction == 'R' && colIndex < 2 {
-				colIndex++
-			} else if instruction == 'L' && colIndex > 0 {
-				colIndex--
-			} else if instruction == 'U' && rowIndex > 0 {
-				rowIndex--
-			} else if instruction == 'D' && rowIndex < 2 {
-				rowIndex++
-			}
+	for _, instruction := range input {
+		if instruction == '\n' {
+			pressedButtons += strconv.Itoa(keypad[rowIndex][colIndex])
+			continue
 		}
-		pressedButtons += strconv.Itoa(keypad[rowIndex][colIndex])
+		if instruction == 'R' && colIndex < 2 {
+			colIndex++
+		} else if instruction == 'L' && colIndex > 0 {
+			colIndex--
+		} else if instruction == 'U' && rowIndex > 0 {
+			rowIndex--
+		} else if instruction == 'D' && rowIndex < 2 {
+			rowIndex++
+		}
 	}
+	pressedButtons += strconv.Itoa(keypad[rowIndex][colIndex])
+
 	print(pressedButtons)
 
 }
