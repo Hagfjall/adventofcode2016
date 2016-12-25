@@ -8,10 +8,11 @@ import (
 	"strings"
 	"sort"
 	"github.com/cznic/sortutil"
+	"strconv"
 )
 
 func main() {
-	file, err := os.Open("test.txt")
+	file, err := os.Open("input.txt")
 	if err != nil {
 		log.Fatal(err)
 		return
@@ -22,33 +23,30 @@ func main() {
 		return
 	}
 	input := string(byte)
-	//numberOfOccrencies := make(map[string]int)
+	sectorIdSum := 0
 
 	for _, row := range strings.Split(input, "\n") {
-		print(calculateChecksum(row))
-		//for index, nbr := range numberOfOccrencies {
-		//	//print(string(index + 61) + " -> " + strconv.Itoa(nbr))
-		//}
+		calculatedChecksum := calculateChecksum(row)
+		checksum := row[strings.LastIndex(row, "[") + 1:len(row) - 1]
+		if checksum == calculatedChecksum {
+			sectorId, _ := strconv.Atoi(row[strings.LastIndex(row, "-") + 1:strings.LastIndex(row, "[")])
+			sectorIdSum += sectorId
+		}
 	}
-	//for key := range numberOfOccrencies {
-	//	fmt.Printf("%s\n", string(key))
-	//
-	//}
+	print(sectorIdSum)
 }
 
-//aaaaa-bbb-z-y-x-123[abxyz]
 func calculateChecksum(string string) string {
-	//alphabet := [...]string{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'}
 	numberOfOccurrences := make(map[rune]int)
+
 	//count number of occurrences for all characters
 	for _, character := range string {
-		if character == '[' {
+		if character == '[' { //read all characters before checksum
 			break;
 		}
-		if character < 'a' {
+		if character < 'a' { //counts for '-' as well as all numerics
 			continue
 		}
-		//fmt.Printf("%c, %v, %v\n", string[index], character, character - 'a')
 		numberOfOccurrences[character]++
 	}
 
@@ -73,7 +71,6 @@ func calculateChecksum(string string) string {
 			}
 
 			checksum += fmt.Sprintf("%c", s)
-			fmt.Printf("%d: %c, %d\n", c, s, k)
 			c++
 		}
 	}
