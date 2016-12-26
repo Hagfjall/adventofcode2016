@@ -11,7 +11,6 @@ import (
 var input string
 var errorCorrectedMessage string
 
-const numberOfCharactersPerRow = 8
 
 func main() {
 	file, err := os.Open("input.txt")
@@ -40,6 +39,7 @@ func main() {
 
 func partOne() {
 	numberOfLines := strings.Count(input, "\n")
+	numberOfCharactersPerRow := strings.Index(input, "\n")
 	var mostCommonCharacter rune
 	var mostCommonCharacterCount int
 
@@ -48,11 +48,11 @@ func partOne() {
 		for character := 'a'; character <= 'z'; character++ {
 			characterCount := 0
 			for row := 0; row < numberOfLines; row++ {
-				if []rune(input)[position + (numberOfCharactersPerRow + 1 * row)] == character {
+				if []rune(input)[position + (numberOfCharactersPerRow +1) * row] == character {
 					characterCount++
 				}
 			}
-			if characterCount > mostCommonCharacterCount {
+			if characterCount > mostCommonCharacterCount{
 				mostCommonCharacterCount = characterCount
 				mostCommonCharacter = character
 			}
@@ -62,5 +62,5 @@ func partOne() {
 	println(errorCorrectedMessage)
 }
 func partTwo() {
-	println("partTwo not implemented")
+	println("partTwo")
 }
