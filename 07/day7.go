@@ -6,6 +6,7 @@ import (
 	"log"
 	"io/ioutil"
 	"strings"
+	"fmt"
 )
 
 var input string
@@ -38,29 +39,40 @@ func main() {
 func partOne() {
 	tlsCounter := 0
 	for _, row := range strings.Split(input, "\n") {
-		index := strings.Index(row, "[")
-		checkHypernet := false
-		for i := 0; i < index; i++ {
-			if containsABBA(row[i:index]) {
+		fromIndex := 0
+		for fromIndex != -1 {
+			println(fmt.Sprintf("fromIndex %d len %d", fromIndex, len(row[fromIndex:])))
+			index := strings.Index(row[fromIndex:], "[")
+			print(index)
+			println(" " + row[fromIndex:])
+			checkHypernet := false
+			if containsABBA(row[fromIndex:index]) {
 				checkHypernet = true
+				println("true")
+			}else{
+				println("false")
+			}
+			if checkHypernet {
+				//index2 := strings.Index(row[fromIndex:], "]")
+				//hyperNextContainsAbba := false
+				//if containsABBA(row[fromIndex:index2]) {
+				//	hyperNextContainsAbba = true
+				//}
+				//if !hyperNextContainsAbba {
+				//	println(row)
+				//	tlsCounter++
+				//} else {
+				//	println("\t" + row)
+				//}
+			}
+			temp := strings.Index(row[fromIndex:], "[")
+			println(fmt.Sprintf("temp %d", temp+fromIndex))
+			if temp == -1{
 				break
 			}
+			fromIndex += temp + 1
 		}
-		if checkHypernet {
-			index2 := strings.LastIndex(row, "]")
-			hyperNextContainsAbba := false
-			for i := index + 1; i < index2; i++ {
-				if containsABBA(row[i:index2]) {
-					hyperNextContainsAbba = true
-				}
-			}
-			if !hyperNextContainsAbba {
-				println(row)
-				tlsCounter++
-			} else {
-				println("\t" + row)
-			}
-		}
+
 	}
 	println(tlsCounter)
 }
@@ -69,14 +81,14 @@ func partTwo() {
 }
 
 func containsABBA(input string) bool {
-	println(input)
+	println("containsABBA input: " + input)
 	if len(input) < 4 {
 		return false
 	}
 	for i := 0; i < len(input) - 3; i++ {
 		search := input[i] == input[i + 3] && input[i + 1] == input[i + 2] &&
 			input[i] != input[i + 2]
-		if search{
+		if search {
 			return true
 		}
 	}
