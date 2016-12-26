@@ -11,7 +11,6 @@ import (
 var input string
 var errorCorrectedMessage string
 
-
 func main() {
 	file, err := os.Open("input.txt")
 	if err != nil {
@@ -48,11 +47,11 @@ func partOne() {
 		for character := 'a'; character <= 'z'; character++ {
 			characterCount := 0
 			for row := 0; row < numberOfLines; row++ {
-				if []rune(input)[position + (numberOfCharactersPerRow +1) * row] == character {
+				if []rune(input)[position + (numberOfCharactersPerRow + 1) * row] == character {
 					characterCount++
 				}
 			}
-			if characterCount > mostCommonCharacterCount{
+			if characterCount > mostCommonCharacterCount {
 				mostCommonCharacterCount = characterCount
 				mostCommonCharacter = character
 			}
@@ -62,5 +61,26 @@ func partOne() {
 	println(errorCorrectedMessage)
 }
 func partTwo() {
-	println("partTwo")
+	numberOfLines := strings.Count(input, "\n")
+	numberOfCharactersPerRow := strings.Index(input, "\n")
+	var leastCommonCharacter rune
+	var leastCommonCharacterCount int
+
+	for position := 0; position < numberOfCharactersPerRow; position++ {
+		leastCommonCharacterCount = numberOfLines + 1
+		for character := 'a'; character <= 'z'; character++ {
+			characterCount := 0
+			for row := 0; row < numberOfLines; row++ {
+				if []rune(input)[position + (numberOfCharactersPerRow + 1) * row] == character {
+					characterCount++
+				}
+			}
+			if characterCount < leastCommonCharacterCount {
+				leastCommonCharacterCount = characterCount
+				leastCommonCharacter = character
+			}
+		}
+		errorCorrectedMessage += string(leastCommonCharacter)
+	}
+	println(errorCorrectedMessage)
 }
