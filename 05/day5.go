@@ -29,10 +29,10 @@ func main() {
 func partOne() (f func()) {
 	f = func() {
 		for {
+
 			md5array := md5.Sum([]byte(fmt.Sprintf("%s%d", input, counter)))
-			md5 := fmt.Sprintf("%x", md5array)
-			if strings.HasPrefix(md5[:], "00000") {
-				password += fmt.Sprintf("%c", md5[5])
+			if md5array[0] == 0 && md5array[1] == 0 && md5array[2] < 16{
+				password += fmt.Sprintf("%x", md5array[2])
 			}
 			if len(password) > 7 {
 				break
