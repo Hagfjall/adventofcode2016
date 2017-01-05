@@ -28,15 +28,7 @@ func main() {
 	flag.BoolVar(&partTwoFlag, "partTwo", false, "run part two of the puzzle")
 	flag.Parse()
 
-	if partTwoFlag {
-		partTwo()
-	} else {
-		partOne()
-	}
 
-}
-
-func partOne() {
 	var screen [6][50]bool
 	for _, line := range strings.Split(input, "\n") {
 		if strings.HasPrefix(line, "rect") {
@@ -57,9 +49,15 @@ func partOne() {
 			rotateRow(row, step, &screen)
 		}
 	}
-	println(countLitPixels(&screen))
+
+	if partTwoFlag {
+		printScreen(&screen)
+	} else {
+		println(countLitPixels(&screen))
+	}
 
 }
+
 func rotateColumn(column int, steps int, screen *[6][50]bool) {
 	var temp [6]bool
 	for i := 0; i < 6; i++ {
@@ -113,8 +111,4 @@ func countLitPixels(screen *[6][50]bool) (sum int) {
 		}
 	}
 	return sum
-}
-
-func partTwo() {
-	println("partTwo not implemented yet")
 }
