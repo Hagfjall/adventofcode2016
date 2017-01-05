@@ -23,7 +23,6 @@ func main() {
 		return
 	}
 	input = string(byteArray)
-	input = "rect 3x2\nrotate column x=1 by 49"
 
 	var partTwoFlag bool
 	flag.BoolVar(&partTwoFlag, "partTwo", false, "run part two of the puzzle")
@@ -37,21 +36,8 @@ func main() {
 
 }
 
-//rect 1x1
-//rotate row y=0 by 10
-//rect 1x1
-//rotate row y=0 by 10
-//rect 1x1
-//rotate row y=0 by 5
-//rect 1x1
-//rotate row y=0 by 3
-//rect 2x1
-//rotate row y=0 by 4
-//rotate column x=1 by 1
-//rotate row y=0 by 4
-
 func partOne() {
-	var screen [50][6]bool
+	var screen [6][50]bool
 	for _, line := range strings.Split(input, "\n") {
 		if strings.HasPrefix(line, "rect") {
 			n := strings.Split(line[5:], "x")
@@ -62,30 +48,39 @@ func partOne() {
 			n := strings.Split(line[16:], " by ")
 			col, _ := strconv.Atoi(n[0])
 			step, _ := strconv.Atoi(n[1])
-			printScreen(&screen)
 			rotateColumn(col, step, &screen)
-			printScreen(&screen)
 
 		} else if strings.HasPrefix(line, "rotate r") {
-
+			n := strings.Split(line[13:], " by ")
+			row, _ := strconv.Atoi(n[0])
+			step, _ := strconv.Atoi(n[1])
+			rotateRow(row, step, &screen)
 		}
 	}
+	println(countLitPixels(&screen))
 
 }
-func rotateColumn(column int, steps int, screen *[50][6]bool) {
-	var temp [50]bool
-	for i := 0; i < 50; i++{
+func rotateColumn(column int, steps int, screen *[6][50]bool) {
+	var temp [6]bool
+	for i := 0; i < 6; i++ {
 		temp[i] = screen[i][column]
 	}
 	for index, value := range temp {
-		screen[(index + steps) % 50][column] = value
+		screen[(index + steps) % 6][column] = value
 	}
 }
-func partTwo() {
-	println("partTwo not implemented yet")
+
+func rotateRow(row int, steps int, screen *[6][50]bool) {
+	var temp [50]bool
+	for i := 0; i < 50; i++ {
+		temp[i] = screen[row][i]
+	}
+	for index, value := range temp {
+		screen[row][(index + steps) % 50] = value
+	}
 }
 
-func printScreen(screen *[50][6]bool) {
+func printScreen(screen *[6][50]bool) {
 	for w := 0; w < len(screen); w++ {
 		for h := 0; h < len(screen[0]); h++ {
 			if screen[w][h] {
@@ -100,10 +95,26 @@ func printScreen(screen *[50][6]bool) {
 	println("-----------")
 }
 
-func turnOnPixels(width int, height int, screen *[50][6]bool) {
-	for w := 0; w < width; w++ {
-		for h := 0; h < height; h++ {
+func turnOnPixels(width int, height int, screen *[6][50]bool) {
+	for h := 0; h < height; h++ {
+		for w := 0; w < width; w++ {
 			screen[h][w] = true
 		}
 	}
+}
+
+func countLitPixels(screen *[6][50]bool) (sum int) {
+	sum = 0
+	for _, row := range screen {
+		for _, pixel := range row {
+			if pixel {
+				sum++
+			}
+		}
+	}
+	return sum
+}
+
+func partTwo() {
+	println("partTwo not implemented yet")
 }
