@@ -24,7 +24,6 @@ func main() {
 		return
 	}
 	input = string(byteArray)
-	input = "X(8x2)(3x3)ABCY"
 
 	var partTwoFlag bool
 	flag.BoolVar(&partTwoFlag, "partTwo", false, "run part two of the puzzle")
@@ -41,6 +40,7 @@ func main() {
 //A(1x5)BC = ABBBBBC
 //(3x3)XYZ = XYZXYZXYZ
 //A(2x2)BCD(2x2)EFG = ABCBCDEFEFG
+//(6x1)(1x3)A = (1x3)A
 //X(8x2)(3x3)ABCY = X(3x3)ABC(3x3)ABCY
 func partOne() {
 	var decompressedData bytes.Buffer
@@ -60,7 +60,8 @@ func partOne() {
 		}
 
 	}
-	println(decompressedData.String())
+	println(len(decompressedData.String()))
+
 }
 func partTwo() {
 	println("partTwo not implemented yet")
